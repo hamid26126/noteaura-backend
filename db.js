@@ -1,9 +1,19 @@
-const  mongoose = require('mongoose')
-const mongoURI = 'mongodb+srv://hamid25:bigapple25@noteaura.nouts3q.mongodb.net/?retryWrites=true&w=majority&appName=NoteAuraa'
+const mongoose = require('mongoose');
 
-const connectToMongo = async ()=>{
-    const data = await mongoose.connect(mongoURI)
-    console.log('connected to mongodb')
-}
+// Use environment variable
+const mongoURI = process.env.MONGO_URI;
+
+const connectToMongo = async () => {
+  try {
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('✅ Connected to MongoDB');
+  } catch (error) {
+    console.error('❌ MongoDB connection failed:', error.message);
+    process.exit(1); // Exit process if DB connection fails
+  }
+};
 
 module.exports = connectToMongo;
